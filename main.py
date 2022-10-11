@@ -59,6 +59,9 @@ def main():
                                    dict_entry.get(':@computed_region_cbhk_fwbd', None),
                                    dict_entry.get(':@computed_region_nnga_25f4', None)))
 
+        db_cursor_obj.execute('SELECT * FROM all_meteorites WHERE id <= 1000')
+        q1_result = db_cursor_obj.fetchall()
+
         db_cursor_obj.execute('''CREATE TABLE IF NOT EXISTS filtered_data(
                                         name TEXT,
                                         id INTEGER,
@@ -75,12 +78,8 @@ def main():
 
         db_cursor_obj.execute('''DELETE FROM filtered_data''')
 
-        db_cursor_obj.execute('''SELECT * FROM all_meteorites WHERE id <= 1000''')
-        filter_results = db_cursor_obj.fetchall()
-        print(filter_results)
-
-        for tuple_entry in range(len(filter_results)):
-            db_cursor_obj.execute(INSERT INTO filter_results VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?))
+        for tuple_entry in q1_result:
+            db_cursor_obj.execute('''INSERT INTO filtered_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', tuple_entry)
 
         db_connection.commit()
 
